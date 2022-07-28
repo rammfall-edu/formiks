@@ -1,3 +1,72 @@
-body {
-  color: aqua;
+body,
+html,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wrapper {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input__label {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.input__btn {
+  position: absolute;
+  top: 17px;
+  right: 0;
+}
+
+.input__input {
+  display: block;
+  width: 100%;
+}
+
+.input__input--error {
+  border-color: red;
+}
+
+.input__message {
+  color: red;
+}
+
+header {
+  background-color: aqua;
+  padding: 20px 0;
+
+  & > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.container {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+nav ul {
+  display: flex;
+  gap: 15px;
+}
+
+.message {
+  background-color: green;
+  color: white;
 }

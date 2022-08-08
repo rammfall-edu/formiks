@@ -1,56 +1,49 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, createContext } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
+import { Provider, useSelector } from 'react-redux';
 
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
 import Header from './components/Header';
 import Account from './pages/Account';
+import ProtectedRoute from './components/ProtectedRoute';
+import Forms from './pages/Forms';
+import store from './store';
+import { themeSelector } from './store/settings/selectors';
 
 const Application = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.userInfo);
-  const [userInfo, setUserInfo] = useState(
-    localStorage.userInfo ? JSON.parse(localStorage.userInfo) : {}
-  );
+  const theme = useSelector(themeSelector);
 
-  const logoutUser = () => {
-    delete localStorage.userInfo;
-    setUserInfo({});
-    setIsLoggedIn(false);
-  };
+  useEffect(() => {
+    if (theme === 'light') {
+      document.body.classList.remove('dark');
+    } else {
+      document.body.classList.add('dark');
+    }
+  }, [theme]);
 
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} logoutUser={logoutUser} />
+      <Header />
       <Routes>
         <Route
           path="/register"
-          element={isLoggedIn ? <Navigate to="/" /> : <Register />}
+          element={<ProtectedRoute isProtected={false} element={Register} />}
         />
         <Route
           path="/login"
-          element={
-            isLoggedIn ? (
-              <Navigate to="/" />
-            ) : (
-              <Login setIsLoggedIn={setIsLoggedIn} setUserInfo={setUserInfo} />
-            )
-          }
+          element={<ProtectedRoute isProtected={false} element={Login} />}
         />
         <Route
           path="/profile"
-          element={isLoggedIn ? <Profile /> : <Navigate to="/login" />}
+          element={<ProtectedRoute isProtected element={Profile} />}
         />
         <Route
           path="/account"
-          element={
-            isLoggedIn ? (
-              <Account userInfo={userInfo} setUserInfo={setUserInfo} />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
+          element={<ProtectedRoute isProtected element={Account} />}
         />
+        <Route path="/" element={<Forms></Forms>} />
       </Routes>
     </>
   );

@@ -1,3 +1,15 @@
+:root {
+  --color-primary-900: #555200;
+  --color-primary-500: #AAA639;
+  --color-primary-100: #FFFCAA;
+}
+
+.dark {
+  --color-primary-900: #220439;
+  --color-primary-500: #532B72;
+  --color-primary-100: #9476AB;
+}
+
 body,
 html,
 ul,
@@ -5,6 +17,10 @@ li {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+body {
+  background-color: var(--color-primary-100);
 }
 
 .wrapper {
@@ -45,13 +61,14 @@ li {
 }
 
 header {
-  background-color: aqua;
+  background-color: var(--color-primary-900);
   padding: 20px 0;
 
   & > div {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 40px;
   }
 }
 
@@ -61,9 +78,17 @@ header {
   margin-right: auto;
 }
 
+nav {
+  flex-grow: 1;
+}
+
 nav ul {
   display: flex;
   gap: 15px;
+
+  a {
+    color: var(--color-primary-100);
+  }
 }
 
 .message {

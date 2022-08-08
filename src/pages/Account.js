@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Field, Form, Formik } from 'formik';
 import * as yup from 'yup';
 
 import Input from '../components/Input';
 import { useFormSubmit } from '../hooks/useFormSubmit';
-import { updateEmail, updatePassword } from '../api';
+import { updateEmail as updateEmailRequest, updatePassword } from '../api';
+import { Rebux } from '../Application';
+import { useDispatch, useSelector } from 'react-redux';
+import { userEmailSelector } from '../store/user/selectors';
+import { updateUserEmail } from '../store/user/actions';
 
-const Account = ({ userInfo, setUserInfo }) => {
+const Account = () => {
   const [emailMessage, setEmailMessage] = useState('');
   const [passwordMessage, setPasswordMessage] = useState('');
+  const email = useSelector(userEmailSelector);
+  const dispatch = useDispatch();
+
   function onEmailSuccess({ info }) {
     setEmailMessage(info);
     setTimeout(() => setEmailMessage(''), 5000);
@@ -23,7 +30,7 @@ const Account = ({ userInfo, setUserInfo }) => {
     onPasswordSuccess
   );
   const onEmailUpdateSubmit = useFormSubmit(
-    updateEmail,
+    updateEmailRequest,
     undefined,
     onEmailSuccess
   );
@@ -83,18 +90,11 @@ const Account = ({ userInfo, setUserInfo }) => {
       <h2>Update email</h2>
       <Formik
         enableReinitialize
-        initialValues={{ email: userInfo.email }}
+        initialValues={{ email }}
         onSubmit={async (...args) => {
           const [{ email }] = args;
           await onEmailUpdateSubmit(...args);
-          setUserInfo((prevState) => {
-            const state = {
-              ...prevState,
-              email,
-            };
-            localStorage.userInfo = JSON.stringify(state);
-            return state;
-          });
+          dispatch(updateUserEmail({ email }));
         }}
       >
         <Form>

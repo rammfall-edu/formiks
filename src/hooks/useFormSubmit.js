@@ -11,6 +11,7 @@ export const useFormSubmit = (request, navigateTo, successAction) => {
     });
     try {
       const response = await request(body);
+      console.log(response);
 
       formikHelpers.resetForm();
       successAction && successAction(response);

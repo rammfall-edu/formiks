@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import * as yup from 'yup';
@@ -6,18 +6,21 @@ import * as yup from 'yup';
 import { loginUser } from '../api';
 import Input from '../components/Input';
 import { useFormSubmit } from '../hooks/useFormSubmit';
+import { useIntl } from '../hooks/useIntl';
+import { useDispatch } from 'react-redux';
+import { login } from '../store/user/actions';
 
-const Login = ({ setIsLoggedIn, setUserInfo }) => {
-  const saveToken = (payload) => {
-    setUserInfo(payload);
-    setIsLoggedIn(true);
-    localStorage.userInfo = JSON.stringify(payload);
+const Login = () => {
+  const getWord = useIntl();
+  const dispatch = useDispatch();
+  const saveToken = ({ token, email }) => {
+    dispatch(login({ token, email }));
   };
   const handleSubmit = useFormSubmit(loginUser, '/profile', saveToken);
 
   return (
     <div className="wrapper">
-      <h1>Login</h1>
+      <h1>{getWord('login.title')}</h1>
       <Formik
         initialValues={{
           email: '',
@@ -30,23 +33,23 @@ const Login = ({ setIsLoggedIn, setUserInfo }) => {
         })}
       >
         <Form>
-          <Field name="email" label="Email" component={Input} />
+          <Field
+            name="email"
+            label={getWord('login.email')}
+            component={Input}
+          />
           <Field
             name="password"
             type="password"
-            label="Password"
+            label={getWord('login.password')}
             component={Input}
           />
-          <button>Login</button>
+          <button>{getWord('login.button')}</button>
+          <p>{getWord('login.roman')}</p>
         </Form>
       </Formik>
     </div>
   );
-};
-
-Login.propTypes = {
-  setIsLoggedIn: PropTypes.func.isRequired,
-  setUserInfo: PropTypes.func.isRequired,
 };
 
 export default Login;

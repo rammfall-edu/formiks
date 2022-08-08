@@ -1,8 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import LangSwitcher from './LangSwitcher';
+import { useIntl } from '../hooks/useIntl';
+import ThemeSwitcher from './ThemeSwitcher';
+import { Rebux } from '../Application';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  userEmailSelector,
+  userIsLoggedInSelector,
+} from '../store/user/selectors';
+import { logout } from '../store/user/actions';
 
-const Header = ({ isLoggedIn, logoutUser }) => {
+const Header = () => {
+  const getWord = useIntl();
+  const isLoggedIn = useSelector(userIsLoggedInSelector);
+  const dispatch = useDispatch();
+  const email = useSelector(userEmailSelector);
+
   return (
     <header>
       <div className="container">
@@ -14,35 +29,35 @@ const Header = ({ isLoggedIn, logoutUser }) => {
             {isLoggedIn ? (
               <>
                 <li>
-                  <Link to="/profile">Profile</Link>
+                  <Link to="/profile">{getWord('header.profile')}</Link>
                 </li>
                 <li>
-                  <Link to="/account">Account</Link>
+                  <Link to="/account">{getWord('header.account')}</Link>
                 </li>
                 <li>
-                  <button onClick={logoutUser}>Logout</button>
+                  <button onClick={() => dispatch(logout())}>
+                    {getWord('header.logout')}
+                  </button>
                 </li>
               </>
             ) : (
               <>
                 <li>
-                  <Link to="/login">Login</Link>
+                  <Link to="/login">{getWord('header.login')}</Link>
                 </li>
                 <li>
-                  <Link to="/register">Registration</Link>
+                  <Link to="/register">{getWord('header.registration')}</Link>
                 </li>
               </>
             )}
           </ul>
         </nav>
+        <LangSwitcher />
+        <ThemeSwitcher />
+        {email}
       </div>
     </header>
   );
-};
-
-Header.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-  logoutUser: PropTypes.func.isRequired,
 };
 
 export default Header;

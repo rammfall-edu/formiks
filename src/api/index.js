@@ -50,3 +50,11 @@ export const updatePassword = async (body) => {
 export const updateEmail = async (body) => {
   return await request('/account/email', 'PUT', body);
 };
+
+export const createFormsRequest = async (body) => {
+  return await request('/form', 'POST', body);
+};
+
+export const getFormsRequest = async () => {
+  return await request('/form');
+};

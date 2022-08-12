@@ -1,6 +1,6 @@
 import React, { useEffect, useState, createContext } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import { Provider, useSelector } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 
 import Register from './pages/Register';
 import Login from './pages/Login';
@@ -11,9 +11,13 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Forms from './pages/Forms';
 import store from './store';
 import { themeSelector } from './store/settings/selectors';
+import { getNotificationsSelector } from './store/notifications/selectors';
+import { deleteNotification } from './store/notifications/actions';
 
 const Application = () => {
   const theme = useSelector(themeSelector);
+  const notifications = useSelector(getNotificationsSelector);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (theme === 'light') {
@@ -43,8 +47,18 @@ const Application = () => {
           path="/account"
           element={<ProtectedRoute isProtected element={Account} />}
         />
-        <Route path="/" element={<Forms></Forms>} />
+        <Route path="/" element={<Forms />} />
       </Routes>
+      <ul className="notifications">
+        {notifications.map(([id, message]) => (
+          <li key={id} className="notification">
+            {message}
+            <button onClick={() => dispatch(deleteNotification({ id }))}>
+              x
+            </button>
+          </li>
+        ))}
+      </ul>
     </>
   );
 };

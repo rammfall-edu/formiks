@@ -21,6 +21,7 @@ const Input = ({
         <span className="input__text">{label}</span>
         <input
           name={name}
+          {...(type === 'checkbox' ? { checked: value } : {})}
           placeholder={placeholder}
           onChange={handleChange}
           onBlur={onBlur}

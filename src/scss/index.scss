@@ -95,3 +95,40 @@ nav ul {
   background-color: green;
   color: white;
 }
+
+.forms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.forms-list__item {
+  display: flex;
+  background-color: var(--color-primary-500);
+  border-radius: 5px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+
+  span {
+    background-color: var(--color-primary-100);
+    border-radius: 4px;
+  }
+}
+
+.notifications {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 400px;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.notification {
+  padding: 10px;
+  background-color: var(--color-primary-500);
+  display: flex;
+  justify-content: space-between;
+}
